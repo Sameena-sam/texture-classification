@@ -1,0 +1,47 @@
+CT104-3-M — Dataset acquisition
+================================
+
+Dataset: KTH-TIPS2-b (surface material texture benchmark)
+Authors : Mallikarjuna, P., Targhi, A. T., Fritz, M., Hayman, E., Caputo, B.,
+          & Eklundh, J.-O. (2006). The KTH-TIPS2 database.
+Host    : KTH Computer Vision and Active Perception Lab (CVAP)
+Source  : https://www.csc.kth.se/cvap/databases/kth-tips/index.html
+
+Contents: 11 materials x 4 physical samples x 108 images (3 poses x 4
+          illuminations x 9 scales) = 4,752 images.
+We use  : 6 texture classes = wood, cork, corduroy, cotton, wool, linen
+          (~432 images each -> ~2,592 total; within the 2,000-5,000 range).
+
+WHY A SAMPLE-AWARE SPLIT: KTH-TIPS2-b provides FOUR distinct physical samples
+per material. Random splitting would place near-duplicate patches of the same
+sample in both train and test, inflating accuracy. Our pipeline (SPLIT_MODE =
+"grouped" in config.py) keeps whole samples in a single split, matching the
+standard texture-classification protocol and giving an honest generalisation
+estimate.
+
+------------------------------------------------------------------
+HOW TO GET IT
+------------------------------------------------------------------
+OPTION A — Official KTH site (free, recommended)
+  1) Open https://www.csc.kth.se/cvap/databases/kth-tips/index.html
+  2) Download the KTH-TIPS2-b archive and unzip it. You will get a folder
+     'KTH-TIPS2-b/' containing one sub-folder per material (wood, cork,
+     corduroy, cotton, wool, linen, ...), each with sample_a..sample_d.
+  3) python src/download_data.py --raw "/path/to/KTH-TIPS2-b"
+     (copies the six configured classes into data/<class>/<sample>/*.png)
+
+OPTION B — Kaggle mirror
+  Search "KTH-TIPS2" on kaggle.com, download + unzip, then run the same
+  download_data.py --raw command pointing at the extracted folder.
+
+OPTION C — Smoke test only (NOT for submission results)
+  python src/make_synthetic_demo.py --per-sample 20
+  (procedural textures with sample_a..d sub-folders, just to verify the code)
+
+------------------------------------------------------------------
+Expected final layout:
+  data/wood/sample_a/*.png ... data/linen/sample_d/*.png
+
+NOTE: Include the dataset in the ZIP submission. If it exceeds 500 MB, submit
+this dataset_link.txt + download_data.py instead of the raw images (allowed by
+the brief).

@@ -1,0 +1,8 @@
+cache/
+data/*
+!data/dataset_link.txt
+models/*
+!models/.gitkeep
+results/*
+!results/.gitkeep
+__pycache__/
